@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiền 16:45–17:30</title>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --fg: #111;
+      --accent: #ff5c5c;
+      --accent2: #4cc9f0;
+      --accent3: #ffd166;
+      --card: #ffffff;
+      --shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+      --radius: 12px;
+      --border: 3px solid #111;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      margin: 0;
+      padding: 24px;
+    }
+    h1, h2, h3, h4, h5 {
+      margin-top: 0;
+    }
+    button, input, select {
+      font-family: inherit;
+    }
+    .app {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background: var(--card);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.5px;
+    }
+    .toggle {
+      display: inline-flex;
+      border: var(--border);
+      border-radius: 50px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+    .toggle button {
+      padding: 10px 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .toggle button.active {
+      background: var(--accent3);
+    }
+    .settings-btn {
+      padding: 12px 18px;
+      border: var(--border);
+      background: var(--accent2);
+      color: #111;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+    @media (min-width: 960px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .card {
+      background: var(--card);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+    }
+    input[type="text"], input[type="date"], input[type="time"], input[type="number"], input[type="url"], textarea {
+      width: 100%;
+      padding: 12px;
+      border: var(--border);
+      border-radius: 12px;
+      background: #fefefe;
+      box-shadow: var(--shadow);
+    }
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent2);
+      cursor: pointer;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .action-btn {
+      padding: 18px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      transition: transform 0.1s;
+    }
+    .action-btn:active {
+      transform: translateY(2px);
+    }
+    .btn-in {
+      background: #6dee8a;
+    }
+    .btn-out {
+      background: #ff9b71;
+    }
+    .btn-warn {
+      background: #ffe066;
+    }
+    .btn-danger {
+      background: #ff5c5c;
+      color: #fff;
+    }
+    .tag {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: var(--border);
+      box-shadow: var(--shadow);
+      font-size: 0.8rem;
+      background: #fff;
+      font-weight: 700;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .kpi {
+      background: #ffd6a5;
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .kpi h3 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .kpi strong {
+      font-size: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #caffbf;
+    }
+    tbody tr:nth-child(every) {}
+    tbody tr:nth-child(odd) {
+      background: rgba(0,0,0,0.03);
+    }
+    .table-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .table-actions button {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      border-radius: 12px;
+      border: var(--border);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+    .toast {
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: var(--border);
+      box-shadow: var(--shadow);
+      background: #fff;
+      min-width: 220px;
+      font-weight: 600;
+    }
+    .toast.success {
+      background: #9ef01a;
+    }
+    .toast.error {
+      background: #ff595e;
+      color: #fff;
+    }
+    .toast.warn {
+      background: #ffca3a;
+    }
+    .settings-panel {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .settings-panel.active {
+      display: flex;
+    }
+    .settings-content {
+      background: #fff;
+      padding: 24px;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: min(420px, 90vw);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .settings-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .settings-actions button {
+      padding: 10px 16px;
+      border: var(--border);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+    .search-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .search-bar input {
+      flex: 1;
+      min-width: 200px;
+    }
+    .filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    canvas {
+      width: 100%;
+      height: 200px;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background: #fff;
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 24px;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: min(420px, 90vw);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-content h3 {
+      margin: 0;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="toast-container" aria-live="polite"></div>
+  <div class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="settings-content">
+      <h2 id="settingsTitle">Cài đặt</h2>
+      <label for="targetMinutes">Thời lượng mục tiêu (phút)</label>
+      <input type="number" id="targetMinutes" min="1" value="45">
+      <label for="apiUrl">API Endpoint (POST)</label>
+      <input type="url" id="apiUrl" placeholder="https://example.com/meditation">
+      <label for="apiToken">API Token</label>
+      <input type="text" id="apiToken" placeholder="Secret token">
+      <button class="action-btn btn-danger" id="clearDataBtn" aria-label="Xóa dữ liệu cục bộ">Xóa dữ liệu cục bộ</button>
+      <div class="settings-actions">
+        <button id="closeSettings">Đóng</button>
+        <button id="saveSettings" class="btn-in">Lưu</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <div class="modal-content">
+      <h3 id="editTitle">Chỉnh sửa log</h3>
+      <input type="hidden" id="editId">
+      <label for="editName">Họ tên</label>
+      <input type="text" id="editName">
+      <label for="editEmpId">Mã/ID</label>
+      <input type="text" id="editEmpId">
+      <label for="editCheckIn">Check-in</label>
+      <input type="time" id="editCheckIn">
+      <label for="editCheckOut">Check-out</label>
+      <input type="time" id="editCheckOut">
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="editPhone"> Đã khóa điện thoại 45’</label>
+        <label><input type="checkbox" id="editPc"> PC ở chế độ Khóa/DND</label>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelEdit">Hủy</button>
+        <button id="saveEdit" class="btn-in">Lưu</button>
+      </div>
+    </div>
+  </div>
+  <div class="app">
+    <header>
+      <h1>Thiền 16:45–17:30</h1>
+      <div class="toggle" role="tablist" aria-label="Chế độ">
+        <button id="staffTab" class="active" role="tab" aria-controls="staffPanel">Staff</button>
+        <button id="adminTab" role="tab" aria-controls="adminPanel">Admin</button>
+      </div>
+      <button class="settings-btn" id="settingsBtn">Cài đặt</button>
+    </header>
+
+    <section id="staffPanel" role="tabpanel" aria-labelledby="staffTab">
+      <div class="card">
+        <h2>Điểm danh Thiền</h2>
+        <label for="nameInput">Họ tên *</label>
+        <input id="nameInput" type="text" placeholder="Nguyễn Văn A" required>
+        <label for="idInput">Mã/ID</label>
+        <input id="idInput" type="text" placeholder="Tùy chọn">
+        <div class="checkbox-group">
+          <label><input id="phoneCheckbox" type="checkbox"> Đã khóa điện thoại 45’</label>
+          <label><input id="pcCheckbox" type="checkbox"> PC ở chế độ Khóa/DND</label>
+        </div>
+        <div class="actions">
+          <button class="action-btn btn-in" id="checkInBtn">Check-in</button>
+          <button class="action-btn btn-out" id="checkOutBtn">Check-out</button>
+        </div>
+        <div id="qrHint" class="tag hidden">QR action đang chờ…</div>
+      </div>
+    </section>
+
+    <section id="adminPanel" role="tabpanel" aria-labelledby="adminTab" class="hidden">
+      <div class="card">
+        <div class="filters">
+          <div>
+            <label for="dateFilter">Ngày</label>
+            <input type="date" id="dateFilter">
+          </div>
+          <div class="search-bar">
+            <label for="searchInput" style="margin-bottom:0;">Tìm</label>
+            <input type="text" id="searchInput" placeholder="Tên hoặc ID">
+          </div>
+          <div>
+            <label for="targetDisplay">Target phút</label>
+            <input type="number" id="targetDisplay" min="1">
+          </div>
+          <button class="action-btn btn-warn" id="exportCsvBtn">Xuất CSV</button>
+        </div>
+      </div>
+      <div class="kpis" aria-live="polite">
+        <div class="kpi">
+          <h3>Participants</h3>
+          <strong id="participantsCount">0</strong>
+        </div>
+        <div class="kpi">
+          <h3>Completed ≥ Target</h3>
+          <strong id="completedCount">0</strong>
+        </div>
+        <div class="kpi">
+          <h3>Phone compliance</h3>
+          <strong id="phoneCompliance">0%</strong>
+        </div>
+        <div class="kpi">
+          <h3>PC compliance</h3>
+          <strong id="pcCompliance">0%</strong>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Logs</h3>
+        <div class="table-wrapper">
+          <table aria-label="Bảng logs thiền">
+            <thead>
+              <tr>
+                <th>Ngày</th>
+                <th>Họ tên</th>
+                <th>ID</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Duration (mins)</th>
+                <th>Phone?</th>
+                <th>PC?</th>
+                <th>Flags</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="logsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Trend 7 ngày</h3>
+        <canvas id="trendCanvas" width="600" height="240" aria-label="Biểu đồ trend 7 ngày"></canvas>
+      </div>
+    </section>
+  </div>
+  <script>
+    const STORAGE_KEY = 'meditationLogs';
+    const SETTINGS_KEY = 'meditationSettings';
+    const QUEUE_KEY = 'meditationSyncQueue';
+    const TZ = 'Asia/Ho_Chi_Minh';
+    const IN_START = '16:30';
+    const IN_END = '17:00';
+    const OUT_START = '17:15';
+    const OUT_END = '18:00';
+
+    const staffTab = document.getElementById('staffTab');
+    const adminTab = document.getElementById('adminTab');
+    const staffPanel = document.getElementById('staffPanel');
+    const adminPanel = document.getElementById('adminPanel');
+    const nameInput = document.getElementById('nameInput');
+    const idInput = document.getElementById('idInput');
+    const phoneCheckbox = document.getElementById('phoneCheckbox');
+    const pcCheckbox = document.getElementById('pcCheckbox');
+    const checkInBtn = document.getElementById('checkInBtn');
+    const checkOutBtn = document.getElementById('checkOutBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const closeSettings = document.getElementById('closeSettings');
+    const saveSettings = document.getElementById('saveSettings');
+    const targetMinutesInput = document.getElementById('targetMinutes');
+    const apiUrlInput = document.getElementById('apiUrl');
+    const apiTokenInput = document.getElementById('apiToken');
+    const clearDataBtn = document.getElementById('clearDataBtn');
+    const dateFilter = document.getElementById('dateFilter');
+    const searchInput = document.getElementById('searchInput');
+    const targetDisplay = document.getElementById('targetDisplay');
+    const exportCsvBtn = document.getElementById('exportCsvBtn');
+    const participantsCount = document.getElementById('participantsCount');
+    const completedCount = document.getElementById('completedCount');
+    const phoneCompliance = document.getElementById('phoneCompliance');
+    const pcCompliance = document.getElementById('pcCompliance');
+    const logsTableBody = document.getElementById('logsTableBody');
+    const trendCanvas = document.getElementById('trendCanvas');
+    const toastContainer = document.querySelector('.toast-container');
+    const editModal = document.getElementById('editModal');
+    const editId = document.getElementById('editId');
+    const editName = document.getElementById('editName');
+    const editEmpId = document.getElementById('editEmpId');
+    const editCheckIn = document.getElementById('editCheckIn');
+    const editCheckOut = document.getElementById('editCheckOut');
+    const editPhone = document.getElementById('editPhone');
+    const editPc = document.getElementById('editPc');
+    const cancelEdit = document.getElementById('cancelEdit');
+    const saveEdit = document.getElementById('saveEdit');
+    const qrHint = document.getElementById('qrHint');
+
+    let logs = loadLogs();
+    let settings = loadSettings();
+    let queue = loadQueue();
+    let lastActions = {};
+    let qrAction = null;
+
+    init();
+
+    function init() {
+      applySettings();
+      attachEvents();
+      setDefaultDate();
+      updateAdminView();
+      processQueue();
+      handleQRParams();
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          processQueue();
+        }
+      });
+      window.addEventListener('online', processQueue);
+    }
+
+    function loadLogs() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch (err) {
+        console.error(err);
+        return [];
+      }
+    }
+
+    function loadSettings() {
+      const defaults = { targetMinutes: 45, apiUrl: '', apiToken: '' };
+      try {
+        const data = localStorage.getItem(SETTINGS_KEY);
+        return data ? Object.assign(defaults, JSON.parse(data)) : defaults;
+      } catch (err) {
+        console.error(err);
+        return defaults;
+      }
+    }
+
+    function loadQueue() {
+      try {
+        const data = localStorage.getItem(QUEUE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch (err) {
+        console.error(err);
+        return [];
+      }
+    }
+
+    function saveLogs() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(logs));
+    }
+
+    function saveSettingsLocal() {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    }
+
+    function saveQueue() {
+      localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+    }
+
+    function attachEvents() {
+      staffTab.addEventListener('click', () => switchMode('staff'));
+      adminTab.addEventListener('click', () => switchMode('admin'));
+      checkInBtn.addEventListener('click', () => handleCheck('in'));
+      checkOutBtn.addEventListener('click', () => handleCheck('out'));
+      settingsBtn.addEventListener('click', openSettings);
+      closeSettings.addEventListener('click', closeSettingsPanel);
+      saveSettings.addEventListener('click', saveSettingsFromPanel);
+      clearDataBtn.addEventListener('click', clearLocalData);
+      dateFilter.addEventListener('change', updateAdminView);
+      searchInput.addEventListener('input', updateAdminView);
+      targetDisplay.addEventListener('change', () => {
+        const value = parseInt(targetDisplay.value, 10);
+        if (!Number.isNaN(value) && value > 0) {
+          settings.targetMinutes = value;
+          targetMinutesInput.value = value;
+          saveSettingsLocal();
+          updateAdminView();
+        }
+      });
+      exportCsvBtn.addEventListener('click', exportCsv);
+      cancelEdit.addEventListener('click', hideEditModal);
+      saveEdit.addEventListener('click', saveEditLog);
+      editModal.addEventListener('click', (e) => {
+        if (e.target === editModal) hideEditModal();
+      });
+      settingsPanel.addEventListener('click', (e) => {
+        if (e.target === settingsPanel) closeSettingsPanel();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          hideEditModal();
+          closeSettingsPanel();
+        }
+      });
+    }
+
+    function switchMode(mode) {
+      if (mode === 'staff') {
+        staffTab.classList.add('active');
+        adminTab.classList.remove('active');
+        staffPanel.classList.remove('hidden');
+        adminPanel.classList.add('hidden');
+      } else {
+        adminTab.classList.add('active');
+        staffTab.classList.remove('active');
+        adminPanel.classList.remove('hidden');
+        staffPanel.classList.add('hidden');
+        updateAdminView();
+      }
+    }
+
+    function openSettings() {
+      targetMinutesInput.value = settings.targetMinutes;
+      apiUrlInput.value = settings.apiUrl;
+      apiTokenInput.value = settings.apiToken;
+      settingsPanel.classList.add('active');
+    }
+
+    function closeSettingsPanel() {
+      settingsPanel.classList.remove('active');
+    }
+
+    function saveSettingsFromPanel() {
+      const target = parseInt(targetMinutesInput.value, 10);
+      settings.targetMinutes = Number.isNaN(target) || target <= 0 ? 45 : target;
+      settings.apiUrl = apiUrlInput.value.trim();
+      settings.apiToken = apiTokenInput.value.trim();
+      saveSettingsLocal();
+      targetDisplay.value = settings.targetMinutes;
+      showToast('Đã lưu cài đặt', 'success');
+      closeSettingsPanel();
+      updateAdminView();
+      processQueue();
+    }
+
+    function clearLocalData() {
+      if (!confirm('Xóa toàn bộ dữ liệu cục bộ?')) return;
+      logs = [];
+      queue = [];
+      saveLogs();
+      saveQueue();
+      updateAdminView();
+      showToast('Đã xóa dữ liệu', 'warn');
+    }
+
+    function setDefaultDate() {
+      const today = getToday();
+      dateFilter.value = today;
+      targetDisplay.value = settings.targetMinutes;
+    }
+
+    function applySettings() {
+      targetMinutesInput.value = settings.targetMinutes;
+      targetDisplay.value = settings.targetMinutes;
+      apiUrlInput.value = settings.apiUrl;
+      apiTokenInput.value = settings.apiToken;
+    }
+
+    function getToday() {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
+      return formatter.format(now);
+    }
+
+    function getTimeString(date = new Date()) {
+      const formatter = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false });
+      return formatter.format(date);
+    }
+
+    function getISO(date = new Date()) {
+      const formatter = new Intl.DateTimeFormat('sv-SE', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const parts = formatter.formatToParts(date);
+      const map = {};
+      parts.forEach(p => map[p.type] = p.value);
+      return `${map.year}-${map.month}-${map.day}T${map.hour}:${map.minute}:${map.second}+07:00`;
+    }
+
+    function parseTimeToMinutes(timeStr) {
+      if (!timeStr) return null;
+      const [h, m] = timeStr.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function uuid() {
+      return crypto.randomUUID ? crypto.randomUUID() : 'id-' + Math.random().toString(16).slice(2) + Date.now();
+    }
+
+    function buildKey(date, name, empId) {
+      return `${date}|${name.trim().toLowerCase()}|${(empId || '').trim().toLowerCase()}`;
+    }
+
+    function handleCheck(action) {
+      const name = nameInput.value.trim();
+      const empId = idInput.value.trim();
+      if (!name) {
+        showToast('Vui lòng nhập họ tên', 'error');
+        return;
+      }
+      const nowTime = getTimeString();
+      const today = getToday();
+      const key = buildKey(today, name, empId);
+      if (!cooldownAllow(key)) return;
+      const existing = logs.find(log => log.date === today && log.name.toLowerCase() === name.toLowerCase() && (log.empId || '').toLowerCase() === empId.toLowerCase());
+      if (action === 'in') {
+        handleCheckIn(existing, { name, empId, nowTime, today });
+      } else {
+        handleCheckOut(existing, { name, empId, nowTime, today });
+      }
+    }
+
+    function cooldownAllow(key) {
+      const now = Date.now();
+      if (lastActions[key] && now - lastActions[key] < 10000) {
+        showToast('Vui lòng chờ 10s trước thao tác tiếp theo', 'warn');
+        return false;
+      }
+      lastActions[key] = now;
+      return true;
+    }
+
+    function handleCheckIn(existing, context) {
+      const { name, empId, nowTime, today } = context;
+      const createdAt = getISO();
+      const flags = [];
+      if (!isWithin(nowTime, IN_START, IN_END)) {
+        flags.push('outside_window');
+      }
+      if (!phoneCheckbox.checked) {
+        // nothing; compliance tracked separately
+      }
+      const baseLog = existing || { id: uuid(), createdAt, source: 'local' };
+      const log = {
+        ...baseLog,
+        date: today,
+        name,
+        empId,
+        checkIn: nowTime,
+        checkOut: null,
+        duration: 0,
+        phoneLocked: phoneCheckbox.checked,
+        pcLocked: pcCheckbox.checked,
+        flags: mergeFlags(flags.concat(['missing_checkout']), baseLog.flags || []),
+        createdAt: baseLog.createdAt || createdAt,
+        updatedAt: createdAt,
+        source: baseLog.source || 'local'
+      };
+      upsertLog(log);
+      showToast(`Check-in lúc ${nowTime}`, flags.includes('outside_window') ? 'warn' : 'success');
+      qrAction = null;
+      qrHint.classList.add('hidden');
+    }
+
+    function handleCheckOut(existing, context) {
+      const { name, empId, nowTime, today } = context;
+      if (!existing) {
+        showToast('Chưa có check-in hôm nay', 'error');
+        return;
+      }
+      if (existing.date !== today) {
+        showToast('Check-in không thuộc hôm nay', 'error');
+        return;
+      }
+      const duration = calculateDuration(existing.checkIn, nowTime);
+      const flags = existing.flags ? existing.flags.slice() : [];
+      removeFlag(flags, 'missing_checkout');
+      if (!isWithin(nowTime, OUT_START, OUT_END)) {
+        addFlag(flags, 'outside_window');
+      }
+      if (duration < settings.targetMinutes) {
+        addFlag(flags, 'short_duration');
+      } else {
+        removeFlag(flags, 'short_duration');
+      }
+      const updated = {
+        ...existing,
+        checkOut: nowTime,
+        duration,
+        phoneLocked: existing.phoneLocked,
+        pcLocked: existing.pcLocked,
+        flags,
+        updatedAt: getISO(),
+      };
+      upsertLog(updated);
+      showToast(`Check-out lúc ${nowTime} (${duration} phút)`, flags.includes('short_duration') ? 'warn' : 'success');
+      qrAction = null;
+      qrHint.classList.add('hidden');
+    }
+
+    function addFlag(flags, flag) {
+      if (!flags.includes(flag)) flags.push(flag);
+    }
+
+    function removeFlag(flags, flag) {
+      const idx = flags.indexOf(flag);
+      if (idx >= 0) flags.splice(idx, 1);
+    }
+
+    function mergeFlags(newFlags, existingFlags) {
+      const set = new Set([...(existingFlags || []), ...newFlags]);
+      return Array.from(set);
+    }
+
+    function calculateDuration(checkIn, checkOut) {
+      const inMinutes = parseTimeToMinutes(checkIn);
+      const outMinutes = parseTimeToMinutes(checkOut);
+      if (inMinutes == null || outMinutes == null) return 0;
+      return Math.max(0, outMinutes - inMinutes);
+    }
+
+    function upsertLog(log) {
+      const index = logs.findIndex(item => item.id === log.id);
+      if (index >= 0) {
+        logs[index] = log;
+      } else {
+        logs.push(log);
+      }
+      logs.sort((a, b) => (a.date + a.name).localeCompare(b.date + b.name));
+      saveLogs();
+      queueLogForSync(log);
+      updateAdminView();
+    }
+
+    function queueLogForSync(log) {
+      if (!settings.apiUrl) return;
+      const payload = { token: settings.apiToken, payload: log };
+      const existingIdx = queue.findIndex(item => item.id === log.id);
+      if (existingIdx >= 0) {
+        queue[existingIdx] = { id: log.id, payload };
+      } else {
+        queue.push({ id: log.id, payload });
+      }
+      saveQueue();
+      processQueue();
+    }
+
+    async function processQueue() {
+      if (!settings.apiUrl || queue.length === 0) return;
+      const pending = [...queue];
+      queue = [];
+      saveQueue();
+      for (const item of pending) {
+        try {
+          await sendToApi(item.payload);
+          markLogSynced(item.id);
+        } catch (err) {
+          console.error('Sync failed', err);
+          queue.push(item);
+        }
+      }
+      saveQueue();
+    }
+
+    async function sendToApi(body) {
+      const response = await fetch(settings.apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+    }
+
+    function markLogSynced(id) {
+      const index = logs.findIndex(item => item.id === id);
+      if (index >= 0) {
+        logs[index].source = 'api';
+        saveLogs();
+        updateAdminView();
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('hide');
+        toast.remove();
+      }, 3200);
+    }
+
+    function isWithin(time, start, end) {
+      const t = parseTimeToMinutes(time);
+      const s = parseTimeToMinutes(start);
+      const e = parseTimeToMinutes(end);
+      return t >= s && t <= e;
+    }
+
+    function updateAdminView() {
+      const filterDate = dateFilter.value || getToday();
+      const searchTerm = (searchInput.value || '').trim().toLowerCase();
+      const filtered = logs.filter(log => {
+        if (log.date !== filterDate) return false;
+        if (!searchTerm) return true;
+        return log.name.toLowerCase().includes(searchTerm) || (log.empId || '').toLowerCase().includes(searchTerm);
+      });
+
+      participantsCount.textContent = filtered.length.toString();
+      const completed = filtered.filter(log => log.checkOut && log.duration >= settings.targetMinutes);
+      completedCount.textContent = completed.length.toString();
+      const phoneYes = filtered.filter(log => log.phoneLocked).length;
+      const pcYes = filtered.filter(log => log.pcLocked).length;
+      phoneCompliance.textContent = filtered.length ? `${Math.round((phoneYes / filtered.length) * 100)}%` : '0%';
+      pcCompliance.textContent = filtered.length ? `${Math.round((pcYes / filtered.length) * 100)}%` : '0%';
+
+      renderTable(filtered);
+      renderTrend(filterDate);
+    }
+
+    function renderTable(data) {
+      logsTableBody.innerHTML = '';
+      if (data.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 10;
+        cell.textContent = 'Không có dữ liệu';
+        row.appendChild(cell);
+        logsTableBody.appendChild(row);
+        return;
+      }
+      data.forEach(log => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${log.date}</td>
+          <td>${escapeHtml(log.name)}</td>
+          <td>${escapeHtml(log.empId || '')}</td>
+          <td>${log.checkIn || ''}</td>
+          <td>${log.checkOut || ''}</td>
+          <td>${log.duration || 0}</td>
+          <td>${log.phoneLocked ? 'Yes' : 'No'}</td>
+          <td>${log.pcLocked ? 'Yes' : 'No'}</td>
+          <td>${(log.flags || []).map(flag => `<span class="tag">${flag}</span>`).join('')}</td>
+          <td class="table-actions">
+            <button data-id="${log.id}" class="edit-btn">Sửa</button>
+            <button data-id="${log.id}" class="delete-btn">Xóa</button>
+          </td>`;
+        logsTableBody.appendChild(row);
+      });
+      logsTableBody.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => openEditModal(btn.dataset.id));
+      });
+      logsTableBody.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => deleteLog(btn.dataset.id));
+      });
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, (ch) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[ch]));
+    }
+
+    function openEditModal(id) {
+      const log = logs.find(item => item.id === id);
+      if (!log) return;
+      editId.value = log.id;
+      editName.value = log.name;
+      editEmpId.value = log.empId || '';
+      editCheckIn.value = log.checkIn || '';
+      editCheckOut.value = log.checkOut || '';
+      editPhone.checked = !!log.phoneLocked;
+      editPc.checked = !!log.pcLocked;
+      editModal.classList.add('active');
+    }
+
+    function hideEditModal() {
+      editModal.classList.remove('active');
+    }
+
+    function saveEditLog() {
+      const id = editId.value;
+      const log = logs.find(item => item.id === id);
+      if (!log) return;
+      const name = editName.value.trim();
+      if (!name) {
+        showToast('Tên không được trống', 'error');
+        return;
+      }
+      log.name = name;
+      log.empId = editEmpId.value.trim();
+      log.checkIn = editCheckIn.value || null;
+      log.checkOut = editCheckOut.value || null;
+      log.phoneLocked = editPhone.checked;
+      log.pcLocked = editPc.checked;
+      log.duration = log.checkIn && log.checkOut ? calculateDuration(log.checkIn, log.checkOut) : 0;
+      const flags = new Set(log.flags || []);
+      if (!log.checkOut) {
+        flags.add('missing_checkout');
+      } else {
+        flags.delete('missing_checkout');
+      }
+      if (log.checkIn && !isWithin(log.checkIn, IN_START, IN_END)) {
+        flags.add('outside_window');
+      }
+      if (log.checkOut && !isWithin(log.checkOut, OUT_START, OUT_END)) {
+        flags.add('outside_window');
+      }
+      if (log.checkOut && log.duration < settings.targetMinutes) {
+        flags.add('short_duration');
+      } else {
+        flags.delete('short_duration');
+      }
+      log.flags = Array.from(flags);
+      log.updatedAt = getISO();
+      saveLogs();
+      queueLogForSync(log);
+      hideEditModal();
+      updateAdminView();
+      showToast('Đã cập nhật log', 'success');
+    }
+
+    function deleteLog(id) {
+      if (!confirm('Xóa log này?')) return;
+      logs = logs.filter(item => item.id !== id);
+      saveLogs();
+      updateAdminView();
+      showToast('Đã xóa log', 'warn');
+    }
+
+    function exportCsv() {
+      const filterDate = dateFilter.value || getToday();
+      const searchTerm = (searchInput.value || '').trim().toLowerCase();
+      const filtered = logs.filter(log => {
+        if (log.date !== filterDate) return false;
+        if (!searchTerm) return true;
+        return log.name.toLowerCase().includes(searchTerm) || (log.empId || '').toLowerCase().includes(searchTerm);
+      });
+      if (filtered.length === 0) {
+        showToast('Không có dữ liệu để xuất', 'warn');
+        return;
+      }
+      const header = ['id','date','name','empId','checkIn','checkOut','duration','phoneLocked','pcLocked','flags','createdAt','updatedAt','source'];
+      const rows = filtered.map(log => header.map(key => {
+        if (key === 'flags') {
+          return '"' + (log.flags || []).join('|') + '"';
+        }
+        const value = log[key] != null ? log[key] : '';
+        return typeof value === 'string' ? '"' + value.replace(/"/g, '""') + '"' : value;
+      }).join(','));
+      const csv = [header.join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `meditation_${filterDate}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('Đã xuất CSV', 'success');
+    }
+
+    function renderTrend(referenceDate) {
+      const ctx = trendCanvas.getContext('2d');
+      ctx.clearRect(0, 0, trendCanvas.width, trendCanvas.height);
+      const dates = [];
+      const participants = [];
+      const completed = [];
+      const [y, m, d] = referenceDate.split('-').map(Number);
+      const ref = new Date(y, m - 1, d);
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(ref);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().slice(0,10);
+        dates.push(dateStr);
+        const dayLogs = logs.filter(log => log.date === dateStr);
+        participants.push(dayLogs.length);
+        completed.push(dayLogs.filter(log => log.checkOut && log.duration >= settings.targetMinutes).length);
+      }
+      const maxVal = Math.max(5, ...participants, ...completed);
+      const padding = 30;
+      const width = trendCanvas.width - padding * 2;
+      const height = trendCanvas.height - padding * 2;
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(padding, padding);
+      ctx.lineTo(padding, padding + height);
+      ctx.lineTo(padding + width, padding + height);
+      ctx.stroke();
+      participants.forEach((val, idx) => {
+        const x = padding + (width / 6) * idx;
+        const y = padding + height - (val / maxVal) * height;
+        ctx.fillStyle = '#ff5c5c';
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+        if (idx > 0) {
+          const prevX = padding + (width / 6) * (idx - 1);
+          const prevY = padding + height - (participants[idx - 1] / maxVal) * height;
+          ctx.strokeStyle = '#ff5c5c';
+          ctx.beginPath();
+          ctx.moveTo(prevX, prevY);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        }
+      });
+      completed.forEach((val, idx) => {
+        const x = padding + (width / 6) * idx;
+        const y = padding + height - (val / maxVal) * height;
+        ctx.fillStyle = '#4cc9f0';
+        ctx.beginPath();
+        ctx.rect(x - 6, y - 6, 12, 12);
+        ctx.fill();
+        if (idx > 0) {
+          const prevX = padding + (width / 6) * (idx - 1);
+          const prevY = padding + height - (completed[idx - 1] / maxVal) * height;
+          ctx.strokeStyle = '#4cc9f0';
+          ctx.beginPath();
+          ctx.moveTo(prevX, prevY);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        }
+      });
+      ctx.fillStyle = '#111';
+      ctx.font = '12px sans-serif';
+      dates.forEach((date, idx) => {
+        const x = padding + (width / 6) * idx;
+        ctx.fillText(date.slice(5), x - 16, padding + height + 16);
+      });
+      ctx.fillText('P', padding - 20, padding + 10);
+      ctx.fillText('C', padding - 20, padding + 24);
+    }
+
+    function handleQRParams() {
+      const params = new URLSearchParams(window.location.search);
+      const action = params.get('action');
+      const name = params.get('name');
+      const empId = params.get('id');
+      if (name) {
+        nameInput.value = name;
+      }
+      if (empId) {
+        idInput.value = empId;
+      }
+      if (action === 'in' || action === 'out') {
+        qrAction = action;
+        qrHint.textContent = `QR: chuẩn bị ${action === 'in' ? 'Check-in' : 'Check-out'}`;
+        qrHint.classList.remove('hidden');
+        setTimeout(() => {
+          handleCheck(action);
+        }, 500);
+      }
+    }
+
+    function queueMissingFlags() {
+      logs.forEach(log => {
+        if (!log.checkOut) {
+          addFlag(log.flags = log.flags || [], 'missing_checkout');
+        }
+      });
+      saveLogs();
+    }
+
+    function processMissingFlags() {
+      queueMissingFlags();
+      updateAdminView();
+    }
+
+    processMissingFlags();
+
+  </script>
+</body>
+</html>
